@@ -19,6 +19,19 @@ class Session(plugin.MenuItem):
         plugin.MenuItem.__init__(self)
 
     def callback(self, menuitems, menu, terminal):
-    	item = gtk.MenuItem(_("DUMB"))
+    	item = gtk.MenuItem(_("Save Session"))
+    	item.connect("activate", self.save_session, terminal)
     	menuitems.append(item)
+
+    def save_session(self, _widget, Terminal):
+		for terminal in Terminal.terminator.terminals:
+			print("title", terminal.titlebar.label._label.get_text())
+			print("size", terminal.get_size())
+			print("rect", terminal.get_allocation())
+			print("position", terminal.window.get_position())
+			print("=========================")
+		for window in Terminal.terminator.windows:
+			print(window.title)
+			window.split_axis(window.get_children()[0])
+
 
