@@ -20,18 +20,43 @@ class Session(plugin.MenuItem):
 
     def callback(self, menuitems, menu, terminal):
     	item = gtk.MenuItem(_("Save Session"))
-    	item.connect("activate", self.save_session, terminal)
+    	submenu = gtk.Menu()
+    	saveItem = gtk.MenuItem("Save")
+    	saveItem.connect("activate", self.save_session, terminal)
+    	loadItem = gtk.MenuItem("Load")
+    	loadItem.connect("activate", self.load_session, terminal)
+    	debugTermsItem = gtk.MenuItem("Debug terminals")
+    	debugTermsItem.connect("activate", self.debug_terminals, terminal)
+    	spawnItem = gtk.MenuItem("Recursive spawn")
+    	spawnItem.connect("activate", self.recursive_spawn, terminal)
+    	submenu.append(saveItem)
+    	submenu.append(loadItem)
+    	submenu.append(debugTermsItem)
+    	submenu.append(spawnItem)
+    	item.set_submenu(submenu)
     	menuitems.append(item)
 
+    def load_session(self, _widget, Terminal):
+    	pass
+
     def save_session(self, _widget, Terminal):
+    	pass
+
+    def debug_terminals(self, _widget, Terminal):
 		for terminal in Terminal.terminator.terminals:
 			print("title", terminal.titlebar.label._label.get_text())
 			print("size", terminal.get_size())
 			print("rect", terminal.get_allocation())
 			print("position", terminal.window.get_position())
 			print("=========================")
-		for window in Terminal.terminator.windows:
-			print(window.title)
-			window.split_axis(window.get_children()[0])
 
-
+    def recursive_spawn(self, _widget, Terminal):
+		win = Terminal.terminator.windows[0]
+		open_list = win.get_children()
+		while len(open_list) > 0:
+			child = open_list.pop()
+			class_string = child.__class__.__name__
+			if class_string == "VPaned" or class_string == "HPaned":
+				open_list = open_list + child.get_children()
+			else:
+				child.get_parent().split_axis(child)
