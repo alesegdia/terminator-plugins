@@ -42,6 +42,7 @@ class Session(plugin.MenuItem):
 		print("size", terminal.get_size())
 		print("rect", terminal.get_allocation())
 		print("position", terminal.window.get_position())
+		print("cwd", terminal.get_cwd())
 		print("=========================")
 		return terminal
 
