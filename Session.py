@@ -38,13 +38,13 @@ class Session(plugin.MenuItem):
 		pass
 
 	def get_relevant_data(self, terminal):
-		print("title", terminal.titlebar.label._label.get_text())
-		print("size", terminal.get_size())
-		print("rect", terminal.get_allocation())
-		print("position", terminal.window.get_position())
-		print("cwd", terminal.get_cwd())
-		print("=========================")
-		return terminal
+		return {
+			"title": 	str(terminal.titlebar.label._label.get_text()),
+			"size":  	str(terminal.get_size()),
+			"rect": 	str(terminal.get_allocation()),
+			"pos": 		str(terminal.window.get_position()),
+			"cwd": 		str(terminal.get_cwd())
+		}
 
 	def recursive_save(self, node):
 		class_string = node.__class__.__name__
