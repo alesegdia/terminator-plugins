@@ -96,8 +96,6 @@ class Session(plugin.MenuItem):
 		pprint.pprint(self.recursive_save(win.get_children()[0]))
 
 	def recursive_spawn(self, _widget, Terminal):
-	        import ipdb
-	        ipdb.set_trace()
 		win = Terminal.terminator.windows[0]
 		open_list = win.get_children()
 		while len(open_list) > 0:
